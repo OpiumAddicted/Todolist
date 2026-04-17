@@ -26,67 +26,72 @@ struct ContentView: View {
         
     
     var body: some View {
-        HStack {
-            Text("오늘의 할 일")
-                .bold()
-                .foregroundStyle(Color.blue)
-                .padding(.leading, 25)
-                .font(.system(size: 20))
-            
-            Spacer()
-            
-            Text(Date(), style: .date)
-                .foregroundStyle(Color.gray)
-                .padding(.trailing, 25)
-        }
-        
-        ScrollView {
-            ForEach(items.indices, id: \.self) { index in
+        ZStack {
+            VStack {
                 HStack {
-                    Button {
-                        items[index].checked.toggle()
-                    } label: {
-                        Image(systemName: items[index].checked ? "checkmark.circle.fill" : "circle")
-                            .foregroundColor(items[index].checked ? Color.gray : .blue)
-                            .font(.system(size: 20))
-                    }
-                    
-                    Text(items[index].name)
-                        .foregroundColor(items[index].checked ? Color.gray : .black)
+                    Text("오늘의 할 일")
+                        .bold()
+                        .foregroundStyle(Color.blue)
+                        .padding(.leading, 25)
+                        .font(.system(size: 20))
                     
                     Spacer()
                     
-                    Button {
-                        items.remove(at: index)
-                    } label: {
-                        Image(systemName: "trash")
-                            .foregroundStyle(Color.red)
+                    Text(Date(), style: .date)
+                        .foregroundStyle(Color.gray)
+                        .padding(.trailing, 25)
+                }
+                
+                ScrollView {
+                    ForEach(items.indices, id: \.self) { index in
+                        HStack {
+                            Button {
+                                items[index].checked.toggle()
+                            } label: {
+                                Image(systemName: items[index].checked ? "checkmark.circle.fill" : "circle")
+                                    .foregroundColor(items[index].checked ? Color.gray : .blue)
+                                    .font(.system(size: 20))
+                            }
+                            
+                            Text(items[index].name)
+                                .foregroundColor(items[index].checked ? Color.gray : .black)
+                            
+                            Spacer()
+                            
+                            Button {
+                                items.remove(at: index)
+                            } label: {
+                                Image(systemName: "trash")
+                                    .foregroundStyle(Color.red)
+                            }
+                        }
+                        .padding()
                     }
                 }
                 .padding()
             }
         }
-        .padding()
-        
-        VStack{
-            Spacer()
-            HStack {
+        .overlay {
+            VStack{
                 Spacer()
-                Button(action: {
-                    items.append(Item(name: "새 할일", checked: false))
-                }) {
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 10)
-                            .fill(Color.blue)
-                            .frame(width: 64, height: 64)
-                        
-                        Image(systemName: "plus")
-                            .foregroundColor(.white)
-                            .font(.system(size: 24))
+                HStack {
+                    Spacer()
+                    Button(action: {
+                        items.append(Item(name: "새 할일", checked: false))
+                    }) {
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 10)
+                                .fill(Color.blue)
+                                .frame(width: 64, height: 64)
+                            
+                            Image(systemName: "plus")
+                                .foregroundColor(.white)
+                                .font(.system(size: 24))
+                        }
                     }
                 }
+                .padding()
             }
-            .padding()
         }
     }
 }
